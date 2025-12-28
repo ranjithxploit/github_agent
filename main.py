@@ -7,7 +7,7 @@ and writing the result to an output file.
 """
 
 import argparse
-import sys # Used for printing error messages to stderr and exiting
+import sys # Used for printing error messages to stderr and exiting the program
 
 def process_text_file(input_filepath: str, output_filepath: str):
     """
@@ -18,11 +18,11 @@ def process_text_file(input_filepath: str, output_filepath: str):
         input_filepath (str): The path to the input text file.
         output_filepath (str): The path where the processed text will be saved.
     """
-    raw_lines = []
+    input_lines = [] # Renamed from 'raw_lines' for better clarity
     try:
         # Open the input file for reading with UTF-8 encoding
         with open(input_filepath, 'r', encoding='utf-8') as file_in:
-            raw_lines = file_in.readlines() # Read all lines into a list
+            input_lines = file_in.readlines() # Read all lines into a list
     except FileNotFoundError:
         print(f"Error: Input file '{input_filepath}' not found.", file=sys.stderr)
         sys.exit(1)
@@ -30,9 +30,9 @@ def process_text_file(input_filepath: str, output_filepath: str):
         print(f"Error reading input file '{input_filepath}': {e}", file=sys.stderr)
         sys.exit(1)
 
-    # Transform each line: remove leading/trailing whitespace and convert to uppercase
-    # Then append a newline character to maintain file structure
-    transformed_lines = [line.strip().upper() + '\n' for line in raw_lines]
+    # Transform each line: remove leading/trailing whitespace and convert to uppercase.
+    # A newline character is then appended to each transformed line to maintain file structure.
+    transformed_lines = [line.strip().upper() + '\n' for line in input_lines]
 
     try:
         # Open the output file for writing with UTF-8 encoding
@@ -57,7 +57,8 @@ def main():
         formatter_class=argparse.RawTextHelpFormatter # Helps in formatting multi-line descriptions
     )
 
-    # Use subparsers to allow for easy expansion with more commands in the future
+    # Use subparsers to allow for easy expansion with more commands in the future,
+    # making the CLI extensible for new functionalities.
     subparsers = parser.add_subparsers(
         dest="command",
         help="Available commands for the utility.",
@@ -98,13 +99,13 @@ if __name__ == "__main__":
 # Simple Text Processor Utility
 
 This project provides a straightforward command-line utility designed for basic text file manipulation.
-It offers core functionalities for transforming text data, starting with operations like converting file content to uppercase.
+It offers core functionalities for transforming text data, beginning with operations such as converting file content to uppercase.
 
 ## Features
 
 - **Text Transformation:** Currently supports converting all lines in an input file to uppercase.
 - **Command-Line Interface:** Easy to use via the terminal with clear argument parsing for various commands.
-- **Input/Output Handling:** Processes specified input files and writes results to a designated output file.
+- **File I/O:** Efficiently handles reading from specified input files and writing transformed content to a designated output file.
 
 ## Getting Started
 
@@ -145,4 +146,5 @@ python main.py process --help
 - Add a section on contributing guidelines and license information.
 - Implement additional text processing operations (e.g., lowercase, reverse lines, filter empty lines).
 - Improve error handling for edge cases (e.g., very large files, special character encodings).
+- Ensure cross-platform compatibility, especially for file paths and line endings.
 ```
