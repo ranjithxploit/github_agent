@@ -2,7 +2,7 @@
 # My Data Processing Utility
 
 This project provides a simple command-line utility for processing various types of data files.
-It includes functionalities for parsing, transforming, and generating reports from structured datasets.
+It offers features for parsing, transforming, and generating reports from structured datasets.
 
 **Getting Started**
 To begin using this utility, follow these steps to set up your local environment.
