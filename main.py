@@ -1,53 +1,44 @@
-```markdown
-# Simple Text Processor Utility
+```python
+import argparse
 
-This project provides a straightforward command-line utility designed for basic text file manipulation.
-It offers core functionalities for transforming text data, beginning with operations such as converting file content to uppercase.
+def process_to_uppercase(input_path, output_path):
+    """
+    Reads an input file, converts its entire content to uppercase,
+    and writes the transformed content to a specified output file.
+    Handles basic file I/O errors.
+    """
+    try:
+        with open(input_path, 'r', encoding='utf-8') as infile:
+            file_content = infile.read()
+        
+        uppercase_content = file_content.upper()
+        
+        with open(output_path, 'w', encoding='utf-8') as outfile:
+            outfile.write(uppercase_content)
+        
+        print(f"Successfully converted '{input_path}' to uppercase and saved to '{output_path}'.")
+    except FileNotFoundError:
+        print(f"Error: The input file '{input_path}' was not found.")
+    except IOError as e:
+        print(f"Error during file operation: {e}")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
 
-## Features
+def main():
+    parser = argparse.ArgumentParser(description="A simple command-line utility for basic text file processing.")
+    subparsers = parser.add_subparsers(dest='selected_command', required=True, help='Available commands')
 
-- **Text Transformation:** Converts all lines in an input file to uppercase, serving as a foundational example.
-- **Command-Line Interface:** Easy to use via the terminal with clear argument parsing for various commands.
-- **File I/O:** Efficiently handles reading from specified input files and writing transformed content to a designated output file.
+    # 'process' command parser
+    process_parser = subparsers.add_parser('process', help='Converts the content of a text file to uppercase.')
+    process_parser.add_argument('input_source_path', help='Path to the input text file for processing.')
+    process_parser.add_argument('--output-destination-path', '-o', required=True, 
+                                dest='output_destination_path', help='Path where the processed content will be saved.')
+    
+    args = parser.parse_args()
 
-## Getting Started
+    if args.selected_command == 'process':
+        process_to_uppercase(args.input_source_path, args.output_destination_path)
 
-To begin using this utility, follow these steps to set up your local development environment.
-
-### Installation
-
-```bash
-git clone https://github.com/your-username/your-project.git
-cd your-project
-pip install -r requirements.txt # Note: For this script, requirements.txt might be empty as it uses standard libraries.
-```
-
-### Usage
-
-To convert a text file's content to uppercase and save it to a new file, run:
-```bash
-python main.py process <input_file_path> --output <output_file_path>
-```
-*Example: Processing `input.txt` to `output.txt`*
-```bash
-echo "hello world\npython script" > input.txt
-python main.py process input.txt --output output.txt
-cat output.txt
-# Expected content of output.txt:
-# HELLO WORLD
-# PYTHON SCRIPT
-```
-
-For a comprehensive list of available commands and options, use the `--help` flag:
-```bash
-python main.py --help
-python main.py process --help
-```
-
----
-**TODOs:**
-- Add a section on contributing guidelines and license information.
-- Implement additional text processing operations (e.g., lowercase, reverse lines, filter empty lines).
-- Improve error handling for edge cases (e.g., very large files, special character encodings).
-- Ensure cross-platform compatibility, especially for file paths and line endings.
+if __name__ == "__main__":
+    main()
 ```
